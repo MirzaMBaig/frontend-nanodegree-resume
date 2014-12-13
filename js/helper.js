@@ -60,34 +60,42 @@ var googleMap = "<div id='map'></div>";
 
 
 /*
-The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
-*/
+ The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
+ */
+var buttonClicked = false;
 $(document).ready(function() {
-  $('button').click(function() {
-    var iName = inName() || function(){};
-    $('#name').html(iName);  
+  $('#i18nButton').click(function() {
+
+    if(!buttonClicked){
+      var iName = inName( $('#name').html().trim());
+      buttonClicked = true;
+      $('#name').html(iName);
+    }
   });
-})
+});
 
-
+function inName(namePram){
+  var nameArr = namePram.split(" ");
+  return nameArr[1].toUpperCase() + ' ' + nameArr[0];
+}
 
 /*
-The next few lines about clicks are for the Collecting Click Locations quiz in Lesson 2.
-*/
+ The next few lines about clicks are for the Collecting Click Locations quiz in Lesson 2.
+ */
 clickLocations = [];
 
 function logClicks(x,y) {
   clickLocations.push(
-    {
-      "x": x,
-      "y": y
-    }
+      {
+        x: x,
+        y: y
+      }
   );
-  console.log("x location: " + x + "; y location: " + y);
+  console.log('x location: ' + x + '; y location: ' + y);
 }
 
 $(document).click(function(loc) {
-  // your code goes here!
+  logClicks(loc.pageX, loc.pageY);
 });
 
 
@@ -152,7 +160,7 @@ function initializeMap() {
 
     // The next lines save location data from the search result object to local variables
     var lat = placeData.geometry.location.k;  // latitude from the place service
-    var lon = placeData.geometry.location.B;  // longitude from the place service
+    var lon = placeData.geometry.location.D;  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
 
@@ -235,11 +243,11 @@ Uncomment all the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window 
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
+window.addEventListener('resize', function(e) {
   // Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+  map.fitBounds(mapBounds);
+});
